@@ -8,6 +8,9 @@ class Combo(models.Model):
     nombre = models.CharField(max_length=50)
     costo = models.FloatField()
 
+    def __str__(self):
+        return self.nombre
+
 class Pedido(models.Model):
     nombre = models.CharField(max_length=50)
     cantidad = models.IntegerField()
@@ -21,10 +24,16 @@ class Tamano(models.Model):
     abreviado = models.CharField(max_length=2)
     costo = models.FloatField()
 
+    def __str__(self):
+        return self.tamano
+
 class Ingrediente(models.Model):
     nombre = models.CharField(max_length=20)
     abreviado = models.CharField(max_length=2)
     costo = models.FloatField()
+
+    def __str__(self):
+        return self.nombre
 
 
 class Pedido_Pizza(models.Model):
