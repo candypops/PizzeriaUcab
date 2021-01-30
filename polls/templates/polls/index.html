@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+<form method="POST">
+{% csrf_token %}
+<select name="tam_id">
+{% if lastest_tam %}
+    {%  for tam in lastest_tam %}
+        <option value="{{ tam.id }}">{{ tam.tamano }}</option>
+    {% endfor %}
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+<input type="submit" value="Post"/>
+</select>
+</form>
+
+</body>
+</html>

@@ -4,6 +4,13 @@ class Promo(models.Model):
     codigo = models.CharField(max_length=10)
     descuento = models.FloatField()
 
+class Pedido(models.Model):
+    nombre = models.CharField(max_length=50)
+    cantidad = models.IntegerField()
+    total = models.FloatField()
+    fecha = models.DateField()
+    pedido_promo = models.ForeignKey(Promo, on_delete=models.CASCADE, null=True)
+
 class Combo(models.Model):
     nombre = models.CharField(max_length=50)
     costo = models.FloatField()
@@ -11,13 +18,9 @@ class Combo(models.Model):
     def __str__(self):
         return self.nombre
 
-class Pedido(models.Model):
-    nombre = models.CharField(max_length=50)
-    cantidad = models.IntegerField()
-    total = models.FloatField()
-    fecha = models.DateField()
-    pedido_promo = models.ForeignKey(Promo, on_delete=models.CASCADE)
-    pedido_combo = models.ForeignKey(Combo, on_delete=models.CASCADE)
+class Pedido_Combo(models.Model):
+    pedido_cfk = models.ForeignKey(Pedido, on_delete=models.CASCADE)
+    combo_cfk = models.ForeignKey(Combo, on_delete=models.CASCADE)
 
 class Tamano(models.Model):
     tamano = models.CharField(max_length=20)
