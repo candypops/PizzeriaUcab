@@ -26,7 +26,19 @@
 
             <div class="mb-3">
                 <label class="form-label">Tamaño de la pizza:</label>
-                <select class="form-control"></select>
+                <select class="form-control" name="tam_id">
+                <form action='.' method="POST">
+                    {% csrf_token %}
+                    {% if lastest_tam %}
+                        {%  for tam in lastest_tam %}
+                            <option value="{{ tam.id }}">{{ tam.tamano }}</option>
+                        {% endfor %}
+                    {% else %}
+                        <p>No polls are available.</p>
+                    {% endif %}
+                    </form>
+                </select>
+                
             </div>
             <div class="mb-3">
                 <div class="form-check form-check-inline">
@@ -61,7 +73,6 @@
             <hr> 
             <button class="btn btn-success w-100 mb-2">Ordernar</button>
             <button  class="btn btn-success w-100" >¡Otra Pizza!</button>
-
             
 
         </div>

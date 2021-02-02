@@ -12,7 +12,7 @@ def factura(request):
 
 def tamanos(request):
  latest_tam = Tamano.objects.order_by('id')[:4]
- template = loader.get_template('polls/index.html')
+ template = loader.get_template('cliente.html')
  context = {
   'lastest_tam': latest_tam
  }
@@ -20,7 +20,7 @@ def tamanos(request):
 
 def createPedido(request):
  latest_tam = Tamano.objects.order_by('id')[:4]
- template = loader.get_template('polls/index.html')
+ template = loader.get_template('cliente.html')
  context = {
   'lastest_tam': latest_tam
  }
@@ -30,7 +30,7 @@ def createPedido(request):
   pedido.pedido_fk = Pedido.objects.get(id = 1)
   pedido.pizza_fk = Ingrediente.objects.get(id = 3)
   pedido.save()
-  return render(request, 'polls/index.html')
+  return render(request, 'cliente.html')
 
  return HttpResponse(template.render(context, request))
 
