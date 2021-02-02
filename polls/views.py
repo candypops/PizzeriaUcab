@@ -29,3 +29,15 @@ def createPedido(request):
   return render(request, 'polls/index.html')
 
  return HttpResponse(template.render(context, request))
+
+def mostrarIngredientes(request):
+    lastest_ingrediente = Ingrediente.objects.order_by('id')
+    template = loader.get_template('polls/ingredientes.html')
+    context = {
+        'lastest_ingrediente': lastest_ingrediente
+    }
+    print(request.POST)
+    lista_ingredientes = (request.POST.getlist('ing.id'))
+    print(lista_ingredientes)
+
+    return HttpResponse(template.render(context, request))
