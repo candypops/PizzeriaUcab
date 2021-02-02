@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+<head>  
+    <meta charset="UTF-8">  
+    {% load static %} 
+
+    {% block styles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+        <title>Cliente</title>
+    {% endblock %}
+    
+</head>  
+<body>
+    {% block content%}
+        <br>
+        <div class="d-flex justify-content-center">
+            <p class="h1 justify">¡Haz tu pedido!</p>
+        </div>
+        <form>
+        <div class="form-signin">
+            <hr>  
+            <div class="mb-3">
+                <label class="form-label">Nombre:</label>
+                <input class="form-control"></select>
+            </div>   
+
+            <div class="mb-3">
+                <label class="form-label">Tamaño de la pizza:</label>
+                <select class="form-control"></select>
+            </div>
+            <div class="mb-3">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="option1">
+                    <label class="form-check-label">Jamón</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="option2">
+                    <label class="form-check-label" >Champiñones</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="option3">
+                    <label class="form-check-label">Pimentón</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="option3" >
+                    <label class="form-check-label">Doble Queso</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="option3">
+                    <label class="form-check-label">Aceitunas</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="option3">
+                    <label class="form-check-label">Peperoni</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="option3">
+                    <label class="form-check-label">Salchichón</label>
+                </div>
+            </div>
+            <hr> 
+            <button class="btn btn-success w-100 mb-2">Ordernar</button>
+            <button  class="btn btn-success w-100" >¡Otra Pizza!</button>
+
+            
+
+        </div>
+        </form>
+    {% endblock%}
+</body>

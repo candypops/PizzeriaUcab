@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+<head>  
+    <meta charset="UTF-8">  
+
+    {% load static %}  
+    
+    {% block styles %}
+        <title>Factura</title>
+    {% endblock %}
+    
+</head>  
+
+<body>
+    {% block content%}
+       <br>
+        <div class="d-flex justify-content-center">
+            <p class="h1 justify">Su Factura</p>
+        </div>
+       
+       <div class="container">
+            <hr>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Factura</h5>
+                        <p class="card-text">HASKDH</p>
+                        <p class="card-text">HASKDH</p>
+                        <a href="#" class="btn btn-success">Listo</a>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" style="text-align: center;">
+                        <img src={% static "check.png" %}></a>
+                    </div>
+                    </div>
+                </div>
+            </div>
+       <div>
+
+    {% endblock%}
+</body>

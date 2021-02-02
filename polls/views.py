@@ -4,7 +4,11 @@ from django.template import loader
 from .models import *
 
 def index(request):
- return HttpResponse("Hola UCAB, usted está en el indice de polls")
+ return render(request, 'cliente.html', {})
+
+def factura(request):
+    return render(request, 'factura.html', {})
+
 
 def tamanos(request):
  latest_tam = Tamano.objects.order_by('id')[:4]
