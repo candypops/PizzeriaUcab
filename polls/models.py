@@ -38,6 +38,9 @@ class Ingrediente(models.Model):
     def __str__(self):
         return self.nombre
 
+    def __float__(self):
+        return self.costo
+
 
 class Pedido_Pizza(models.Model):
     pedido_fk = models.ForeignKey(Pedido, on_delete=models.CASCADE)
