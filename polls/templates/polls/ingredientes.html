@@ -7,16 +7,15 @@
 <body>
 <form action='.' method="POST">
 {% csrf_token %}
-<select name="tam_id">
-{% if lastest_tam %}
-    {%  for tam in lastest_tam %}
-        <option value="{{ tam.id }}">{{ tam.tamano }}</option>
+{% if lastest_ingrediente %}
+    {%  for ing in lastest_ingrediente %}
+        <input type="checkbox" id="{{ ing.id }}" name="ing.id" value= "{{ ing.id }}"></input>
+        <label for="{{ ing.nombre }}">{{ ing.nombre }}</label><br>
     {% endfor %}
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
 <input type="submit" value="Post"/>
-</select>
 </form>
 
 </body>
