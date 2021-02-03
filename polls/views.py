@@ -45,6 +45,18 @@ def index(request):
 def factura(request):
     return render(request, 'factura.html', {})
 
+def nombre(request):
+    template = loader.get_template('nombre.html')
+    context = { }
+    if 'nombre' in request.POST:
+        return HttpResponseRedirect('/cliente')
+    else:
+        print("No hay nombre")
+
+    return HttpResponse(template.render(context, request))
+
+    
+
 
 def crearPedido(request):
     pedido = Pedido()

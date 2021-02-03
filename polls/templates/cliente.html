@@ -20,18 +20,14 @@
         {% csrf_token %}
         <div class="form-signin">
             <hr>  
-            <div class="mb-3">
-                <label class="form-label">Nombre:</label>
-                <input class="form-control" name="nombre"></select>
-            </div>
 
             <div class="mb-3">
 
                 <label class="form-label">Tamaño de la pizza:</label>
-                <select name="tam_id">
+                <select name="tam_id" class="form-select">
                 {% if lastest_tam %}
                     {%  for tam in lastest_tam %}
-                        <option value="{{ tam.id }}">{{ tam.tamano }}</option>
+                        <option value="{{ tam.id }}" selected>{{ tam.tamano }}</option>
                     {% endfor %}
                 {% else %}
                     <p>No hay ingredientes disponibles.</p>
