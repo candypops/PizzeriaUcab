@@ -48,7 +48,7 @@ def index(request):
         ped.save()
         request.session['total'] = totaltodo
         if 'ordenar' in request.POST:
-            return HttpResponseRedirect('/factura')
+            return HttpResponseRedirect('/promo')
         else:
             return HttpResponseRedirect('/new')
 
@@ -57,6 +57,7 @@ def index(request):
 def factura(request):
     last_id = request.session.get('pedido_id')
     total = request.session.get('total')
+    promoname = request.session.get('promo')
     pedido = Pedido.objects.get(id=last_id)
     latest_ingrediente = Ingrediente.objects.order_by('id')
     latest_tam = Tamano.objects.order_by('id')
@@ -77,6 +78,7 @@ def factura(request):
         'facturas': facts,
         'pedidos_factura': pedidos_factura,
         'factura_original': facturas,
+        'promo': promoname
     }
 
     if request.method == 'POST':
@@ -141,7 +143,7 @@ def newPizza(request):
         ped.save()
         request.session['total'] = subtotal
         if 'ordenar' in request.POST:
-            return HttpResponseRedirect('/factura')
+            return HttpResponseRedirect('/promo')
         else:
             return HttpResponseRedirect('/new')
 
@@ -246,4 +248,40 @@ def ventas_view(request):
         'salchi':salchi,
         'ningun':ningun
     }
+    return HttpResponse(template.render(context, request))
+
+def promos(request):
+    last_id = request.session.get('pedido_id')
+    pedido = Pedido.objects.get(id=last_id)
+    total = request.session.get('total')
+    allpromos = Promo.objects.all()
+
+    latest_promos = Promo.objects.order_by('id')
+    template = loader.get_template('promos.html')
+    context = {
+        'promos': latest_promos,
+        'nombre': pedido.nombre,
+    }
+    if request.method == 'POST':
+        pedido.pedido_promo = Promo.objects.get(id=request.POST.get('promo.id'))
+        promoid = request.POST.get('promo.id')
+        promoname = Promo.objects.filter(id=promoid)
+        for k in promoname.values('codigo'):
+            pn = k.get('codigo')
+        for i in promoname.values('descuento'):
+            descuento = i.get('descuento')
+        if descuento == 0.00:
+            subtotal = total
+        elif descuento > 1:
+            subtotal = total - descuento
+        else:
+            porcentajeoff = float(total * descuento)
+            print(porcentajeoff)
+            subtotal = total - porcentajeoff
+        pedido.total = subtotal
+        pedido.save()
+        request.session['promo'] = pn
+        request.session['total'] = subtotal
+        return HttpResponseRedirect('/factura')
+
     return HttpResponse(template.render(context, request))

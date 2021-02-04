@@ -10,3 +10,8 @@ insert into polls_ingrediente(nombre, costo) VALUES ('Aceitunas', 5.75);
 insert into polls_ingrediente(nombre, costo) VALUES ('Pepperoni', 3.85);
 insert into polls_ingrediente(nombre, costo) VALUES ('Salchichón', 6.25);
 insert into polls_ingrediente(nombre, costo) VALUES ('Ninguno', 0);
+
+insert into polls_promo(codigo, descuento) VALUES ('Ninguna', 0.00);
+insert into polls_promo(codigo, descuento) VALUES ('MITAD', 0.50);
+insert into polls_promo(codigo, descuento) VALUES ('25%OFF', 0.25);
+insert into polls_promo(codigo, descuento) VALUES ('DELIVERY', 3.00);
