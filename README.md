@@ -4,9 +4,9 @@ Aplicación desarrollada en Django para la toma de pedidos de pizza y reportes d
 
 
 ## Requisitos
-* Python 3
+* Python 3 o superior
 * Ambiente virtual
-* Django 
+* Django 3.1 o superior
 
 ## Instrucciones para su uso
 * Descargue el proyecto
