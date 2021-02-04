@@ -23,7 +23,7 @@
 
             <div class="mb-3">
                 <label class="form-label">Promociones:</label>
-                <select name="promo.id">
+                <select name="promo.id" class="form-select">
                 {% if promos %}
                     {%  for promo in promos %}
                         <option value="{{ promo.id }}">{{ promo.codigo }}</option>
