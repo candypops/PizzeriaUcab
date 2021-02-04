@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+<head>  
+    <meta charset="UTF-8">  
+    {% load static %} 
+
+    {% block styles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+        <title>Cliente</title>
+    {% endblock %}
+    
+</head>  
+<body>
+    {% block content%}
+        <br>
+        <div class="d-flex justify-content-center">
+            <p class="h1 justify">¡{{ nombre }} elige una promoción!</p>
+        </div>
+        <form method="POST">
+        {% csrf_token %}
+        <div class="form-signin">
+            <hr>
+
+            <div class="mb-3">
+                <label class="form-label">Promociones:</label>
+                <select name="promo.id">
+                {% if promos %}
+                    {%  for promo in promos %}
+                        <option value="{{ promo.id }}">{{ promo.codigo }}</option>
+                    {% endfor %}
+                {% else %}
+                    <p>No hay promociones disponibles.</p>
+                {% endif %}
+                </select>
+            </div>
+            <hr> 
+            <button class="btn btn-success w-100 mb-2" name="ordenar" type="submit">Continuar</button>
+
+        </div>
+        </form>
+    {% endblock%}
+</body>
