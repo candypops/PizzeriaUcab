@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+<head>  
+    <meta charset="UTF-8">  
+    {% load static %} 
+
+    {% block styles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+        <title>Cliente</title>
+    {% endblock %}
+    
+</head>  
+<body>
+    {% block content%}
+        <br>
+        <div class="d-flex justify-content-center">
+            <p class="h1 justify">¡Haz tu pedido!</p>
+        </div>
+        <form method="POST">
+        {% csrf_token %}
+        <div class="form-signin">
+            <hr>  
+            <div class="mb-3">
+                <label class="form-label">Nombre:</label>
+                <input class="form-control" name="nombre"></select>
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">Tamaño de la pizza:</label>
+                <select name="tam_id">
+                {% if lastest_tam %}
+                    {%  for tam in lastest_tam %}
+                        <option value="{{ tam.id }}">{{ tam.tamano }}</option>
+                    {% endfor %}
+                {% else %}
+                    <p>No hay ingredientes disponibles.</p>
+                {% endif %}
+                </select>
+            </div>
+            <div class="mb-3">
+                {% if lastest_ingrediente %}
+                    {%  for ing in lastest_ingrediente %}
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input"  type="checkbox" id="{{ ing.id }}" name="ing.id" value= "{{ ing.id }}">
+                            <label for="{{ ing.nombre }}">{{ ing.nombre }}</label><br>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No hay ingredientes disponibles.</p>
+                {% endif %}
+
+            </div>
+            <hr> 
+            <button class="btn btn-success w-100 mb-2" name="ordenar" type="submit">Ordenar</button>
+            <button class="btn btn-success w-100 mb-2" name="otra" type="submit" >¡Otra Pizza!</button>
+
+        </div>
+        </form>
+    {% endblock%}
+</body>

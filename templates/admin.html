@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+<head>  
+    <meta charset="UTF-8">  
+
+    {% load static %}  
+    
+    {% block styles %}
+        <title>Factura</title>
+    {% endblock %}
+    
+</head>  
+<body>
+    {% block content %}
+
+        <br>
+        <div class="d-flex justify-content-center">
+            <p class="h1 justify">Reportes</p>
+        </div>
+       
+        <div class= "container">
+            <hr>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ventas</h5>
+                    {% if ventas %}
+                        {%  for vent in ventas %}
+                            <p class="card-text">Venta {{ vent.id }}: {{ vent.total }}$</p>
+                        {% endfor %}
+                    {% else %}
+                        <p>No polls are available.</p>
+                    {% endif %}
+                </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ventas Diarias</h5>
+                    <h5 class="card-title">{%  now "d-m-Y" %}</h5>
+                    {% if ventas %}
+                        {% load tz %}
+                        {% now "Y-m-d" as today_date %}
+                        {%  for vent in ventas %}
+                            {% if  today_date == vent.fecha|date:"Y-m-d"  %}
+                                <p class="card-text">Venta {{ vent.id }}: {{ vent.total }}$</p>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <p>No polls are available.</p>
+                    {% endif %}
+                </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ventas Tamaño</h5>
+                </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ventas Ingredientes</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                </div>
+                </div>
+            </div>
+            
+            <div class="col">
+                <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ventas Clientes</h5>
+                    {% if ventas %}
+                        {%  for vent in ventas %}
+                                <p class="card-text">Venta {{ vent.nombre }}: {{ vent.total }}$</p>
+                        {% endfor %}
+                    {% else %}
+                        <p>No polls are available.</p>
+                    {% endif %}
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+    {% endblock%}
+</body>

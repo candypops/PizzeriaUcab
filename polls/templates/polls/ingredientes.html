@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+<form action='.' method="POST">
+{% csrf_token %}
+{% if lastest_ingrediente %}
+    {%  for ing in lastest_ingrediente %}
+        <input type="checkbox" id="{{ ing.id }}" name="ing.id" value= "{{ ing.id }}"></input>
+        <label for="{{ ing.nombre }}">{{ ing.nombre }}</label><br>
+    {% endfor %}
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+<input type="submit" value="Post"/>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+<head>  
+    <meta charset="UTF-8">  
+
+    {% load static %}  
+    
+    {% block styles %}
+        <title>Factura</title>
+    {% endblock %}
+    
+</head>  
+
+<body>
+    {% block content%}
+       <br>
+        <div class="d-flex justify-content-center">
+            <p class="h1 justify">Su Factura</p>
+        </div>
+       
+       <div class="container">
+            <hr>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ nombre }} aqui tienes tu factura</h5>
+                        <p class="card-text">Total de pizzas: {{ cantidad }}</p>
+                        <p class="card-text">Detalle pedido:</p>
+                        {% for i in facturas %}
+                            <table>
+                                <tr>
+                                    <th>Descripción</th>
+                                    <th>Costo</th>
+                                </tr>
+                                <tr>
+                                {% for fact in factura_original %}
+                                    {% if i == fact.id %}
+                                        {% for tam in lastest_tam %}
+                                            {% if fact.tamano == tam.id %}
+                                                <td>Tamaño: {{ tam.tamano }} </td>
+                                                <td> {{ tam.costo }}$</td>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                    {% endif %}
+                                {% endfor %}
+
+                                </tr>
+
+                                {% for n in pedidos_factura %}
+                                <tr>
+                                {% if i == n.fk_fac_id %}
+                                   {% for ing in lastest_ingrediente %}
+                                        {% if n.ing == ing.id %}
+                                            <td>Ingrediente: {{ ing.nombre }}</td>
+                                            <td>{{ ing.costo }}$</td>
+                                        {% endif %}
+                                   {% endfor %}
+                                {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        {% endfor %}
+                        <form method="POST">
+                        {% csrf_token %}
+                            <p> <strong>Total:       {{ total }}$</strong></p>
+                            <button class="btn btn-success" type="submit">Listo</button>
+                        </form>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" style="text-align: center;">
+                        <img src={% static "check.png" %}></a>
+                    </div>
+                    </div>
+                </div>
+            </div>
+       <div>
+
+    {% endblock%}
+</body>
