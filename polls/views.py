@@ -1,3 +1,5 @@
+from typing import Counter
+from django.db.models.aggregates import Count
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
@@ -190,11 +192,61 @@ def mostrarIngredientes(request):
 
 def ventas_view(request):
     ventas = Pedido.objects.order_by('id')
-    ventas_tamano = Tamano.objects.order_by('id')
+    factura= Factura.objects.all()
+    factura_ing = fact_ped.objects.all()
+    pers = 0
+    med = 0
+    gran = 0
+    jamon = 0
+    champ = 0
+    pim = 0
+    que = 0
+    acei = 0
+    peppe = 0
+    salchi = 0
+    ningun = 0
+
+    for each in factura:
+        if each.tamano == 1:
+            pers += 1
+        elif each.tamano == 2:
+            med += 1
+        else:
+            gran += 1
+
+    for i in factura_ing:
+        if i.ing == 1:
+            jamon += 1
+        elif i.ing == 2:
+            champ += 1
+        elif i.ing == 3:
+            pim += 1
+        elif i.ing == 4:
+            que += 1
+        elif i.ing == 5:
+            acei += 1
+        elif i.ing == 6:
+            peppe += 1
+        elif i.ing == 7:
+            salchi += 1
+        elif i.ing == 8:
+            ningun += 1
+
+
     template = loader.get_template('admin.html')
     context = {
         'ventas':ventas,
-        'ventas_tamano':ventas_tamano
+        'pers':pers,
+        'med':med,
+        'gran':gran,
+        'jamon':jamon,
+        'champ':champ,
+        'pim':pim,
+        'que':que,
+        'acei':acei,
+        'peppe':peppe,
+        'salchi':salchi,
+        'ningun':ningun
     }
     return HttpResponse(template.render(context, request))
 
