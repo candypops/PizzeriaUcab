@@ -24,7 +24,6 @@ class Pedido_Combo(models.Model):
 
 class Tamano(models.Model):
     tamano = models.CharField(max_length=20)
-    abreviado = models.CharField(max_length=2)
     costo = models.FloatField()
 
     def __str__(self):
@@ -32,7 +31,6 @@ class Tamano(models.Model):
 
 class Ingrediente(models.Model):
     nombre = models.CharField(max_length=20)
-    abreviado = models.CharField(max_length=2)
     costo = models.FloatField()
 
     def __str__(self):
@@ -46,3 +44,13 @@ class Pedido_Pizza(models.Model):
     pedido_fk = models.ForeignKey(Pedido, on_delete=models.CASCADE)
     pizza_fk = models.ForeignKey(Ingrediente, on_delete=models.CASCADE)
     tamano_pizza = models.ForeignKey(Tamano, on_delete=models.CASCADE)
+
+class Factura(models.Model):
+    id = models.AutoField(primary_key=True)
+    tamano = models.IntegerField()
+
+
+class fact_ped(models.Model):
+    fk_pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
+    fk_fac = models.ForeignKey(Factura, on_delete=models.CASCADE)
+    ing = models.IntegerField()
