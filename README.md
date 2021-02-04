@@ -4,9 +4,9 @@ Aplicación desarrollada en Django para la toma de pedidos de pizza y reportes d
 
 
 ## Requisitos
-* Python 3
+* Python 3 o superior
 * Ambiente virtual
-* Django 
+* Django 3.1 o superior
 
 ## Instrucciones para su uso
 * Descargue el proyecto
@@ -22,7 +22,7 @@ Aplicación desarrollada en Django para la toma de pedidos de pizza y reportes d
 * Para ejecutar el proyecto realice el siguiente comando
 ```python manage.py runserver```
 
-*En caso de ser necesario puede crear un super usuario y acceder al administrador de django de la siguiente manera
+* En caso de ser necesario puede crear un super usuario y acceder al administrador de django de la siguiente manera
   * ```python manage.py createsuperuser```
   * Una vez culminado, realizar el paso anterior para ejecutar el proyecto e ir a la ruta */admindjango*
 

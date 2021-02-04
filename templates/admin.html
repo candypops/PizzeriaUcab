@@ -29,7 +29,7 @@
                             <p class="card-text">Venta {{ vent.id }}: {{ vent.total }}$</p>
                         {% endfor %}
                     {% else %}
-                        <p>No polls are available.</p>
+                        <p>No hay ventas.</p>
                     {% endif %}
                 </div>
                 </div>
@@ -48,7 +48,7 @@
                             {% endif %}
                         {% endfor %}
                     {% else %}
-                        <p>No polls are available.</p>
+                        <p>No hay compras.</p>
                     {% endif %}
                 </div>
                 </div>
@@ -56,7 +56,10 @@
             <div class="col">
                 <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Ventas Tamaño</h5>
+                <h5 class="card-title">Ventas Tamaño</h5>
+                    <p class="card-text">Grande: {{ pers }}</p>
+                    <p class="card-text">Mediana: {{ med }}</p>
+                    <p class="card-text">Personal: {{ gran }}</p>
                 </div>
                 </div>
             </div>
@@ -64,7 +67,14 @@
                 <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Ventas Ingredientes</h5>
-                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <p class="card-text">Jamon: {{ jamon }}</p>
+                    <p class="card-text">Champiñones: {{ champ }}</p>
+                    <p class="card-text">Pimentón: {{ pim }}</p>
+                    <p class="card-text">Doble Queso: {{ que }}</p>
+                    <p class="card-text">Aceitunas: {{ acei }}</p>
+                    <p class="card-text">Pepperoni: {{ peppe }}</p>
+                    <p class="card-text">Salchichón: {{ salchi }}</p>
+                    <p class="card-text">Ninguno: {{ ningun }}</p>
                 </div>
                 </div>
             </div>
@@ -78,7 +88,7 @@
                                 <p class="card-text">Venta {{ vent.nombre }}: {{ vent.total }}$</p>
                         {% endfor %}
                     {% else %}
-                        <p>No polls are available.</p>
+                        <p>No hay ventas.</p>
                     {% endif %}
                 </div>
                 </div>

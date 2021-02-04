@@ -61,6 +61,7 @@
                                 {% endfor %}
                             </table>
                         {% endfor %}
+                        <p> <strong>Promo:       {{ promo }}</strong></p>
                         <form method="POST">
                         {% csrf_token %}
                             <p> <strong>Total:       {{ total }}$</strong></p>

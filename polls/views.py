@@ -1,3 +1,5 @@
+from typing import Counter
+from django.db.models.aggregates import Count
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
@@ -46,7 +48,7 @@ def index(request):
         ped.save()
         request.session['total'] = totaltodo
         if 'ordenar' in request.POST:
-            return HttpResponseRedirect('/factura')
+            return HttpResponseRedirect('/promo')
         else:
             return HttpResponseRedirect('/new')
 
@@ -55,6 +57,7 @@ def index(request):
 def factura(request):
     last_id = request.session.get('pedido_id')
     total = request.session.get('total')
+    promoname = request.session.get('promo')
     pedido = Pedido.objects.get(id=last_id)
     latest_ingrediente = Ingrediente.objects.order_by('id')
     latest_tam = Tamano.objects.order_by('id')
@@ -75,6 +78,7 @@ def factura(request):
         'facturas': facts,
         'pedidos_factura': pedidos_factura,
         'factura_original': facturas,
+        'promo': promoname
     }
 
     if request.method == 'POST':
@@ -139,7 +143,7 @@ def newPizza(request):
         ped.save()
         request.session['total'] = subtotal
         if 'ordenar' in request.POST:
-            return HttpResponseRedirect('/factura')
+            return HttpResponseRedirect('/promo')
         else:
             return HttpResponseRedirect('/new')
 
@@ -188,10 +192,96 @@ def mostrarIngredientes(request):
 
 def ventas_view(request):
     ventas = Pedido.objects.order_by('id')
-    ventas_tamano = Tamano.objects.order_by('id')
+    factura= Factura.objects.all()
+    factura_ing = fact_ped.objects.all()
+    pers = 0
+    med = 0
+    gran = 0
+    jamon = 0
+    champ = 0
+    pim = 0
+    que = 0
+    acei = 0
+    peppe = 0
+    salchi = 0
+    ningun = 0
+
+    for each in factura:
+        if each.tamano == 1:
+            pers += 1
+        elif each.tamano == 2:
+            med += 1
+        else:
+            gran += 1
+
+    for i in factura_ing:
+        if i.ing == 1:
+            jamon += 1
+        elif i.ing == 2:
+            champ += 1
+        elif i.ing == 3:
+            pim += 1
+        elif i.ing == 4:
+            que += 1
+        elif i.ing == 5:
+            acei += 1
+        elif i.ing == 6:
+            peppe += 1
+        elif i.ing == 7:
+            salchi += 1
+        elif i.ing == 8:
+            ningun += 1
+
+
     template = loader.get_template('admin.html')
     context = {
         'ventas':ventas,
-        'ventas_tamano':ventas_tamano
+        'pers':pers,
+        'med':med,
+        'gran':gran,
+        'jamon':jamon,
+        'champ':champ,
+        'pim':pim,
+        'que':que,
+        'acei':acei,
+        'peppe':peppe,
+        'salchi':salchi,
+        'ningun':ningun
     }
+    return HttpResponse(template.render(context, request))
+
+def promos(request):
+    last_id = request.session.get('pedido_id')
+    pedido = Pedido.objects.get(id=last_id)
+    total = request.session.get('total')
+    allpromos = Promo.objects.all()
+
+    latest_promos = Promo.objects.order_by('id')
+    template = loader.get_template('promos.html')
+    context = {
+        'promos': latest_promos,
+        'nombre': pedido.nombre,
+    }
+    if request.method == 'POST':
+        pedido.pedido_promo = Promo.objects.get(id=request.POST.get('promo.id'))
+        promoid = request.POST.get('promo.id')
+        promoname = Promo.objects.filter(id=promoid)
+        for k in promoname.values('codigo'):
+            pn = k.get('codigo')
+        for i in promoname.values('descuento'):
+            descuento = i.get('descuento')
+        if descuento == 0.00:
+            subtotal = total
+        elif descuento > 1:
+            subtotal = total - descuento
+        else:
+            porcentajeoff = float(total * descuento)
+            print(porcentajeoff)
+            subtotal = total - porcentajeoff
+        pedido.total = subtotal
+        pedido.save()
+        request.session['promo'] = pn
+        request.session['total'] = subtotal
+        return HttpResponseRedirect('/factura')
+
     return HttpResponse(template.render(context, request))
