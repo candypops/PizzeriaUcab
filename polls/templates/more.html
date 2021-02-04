@@ -14,17 +14,12 @@
     {% block content%}
         <br>
         <div class="d-flex justify-content-center">
-            <p class="h1 justify">¡Haz tu pedido!</p>
+            <p class="h1 justify">¡{{ nombre }} Agrega otra pizza!</p>
         </div>
         <form method="POST">
         {% csrf_token %}
         <div class="form-signin">
-            <hr>  
-            <div class="mb-3">
-                <label class="form-label">Nombre:</label>
-                <input class="form-control" name="nombre"></select>
-            </div>
-
+            <hr>
             <div class="mb-3">
 
                 <label class="form-label">Tamaño de la pizza:</label>
@@ -54,7 +49,6 @@
             <hr> 
             <button class="btn btn-success w-100 mb-2" name="ordenar" type="submit">Ordenar</button>
             <button class="btn btn-success w-100 mb-2" name="otra" type="submit" >¡Otra Pizza!</button>
-
         </div>
         </form>
     {% endblock%}

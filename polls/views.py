@@ -1,24 +1,159 @@
-from django import template
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from .models import *
+from datetime import datetime
 
 def index(request):
- return render(request, 'cliente.html', {})
+    latest_ingrediente = Ingrediente.objects.order_by('id')
+    latest_tam = Tamano.objects.order_by('id')
+    template = loader.get_template('cliente.html')
+    context = {
+        'lastest_ingrediente': latest_ingrediente,
+        'lastest_tam': latest_tam,
+    }
+    cont = 0
+    if request.method == 'POST':
+        print('post')
+        last_id = crearPedido(request)
+        request.session['has_session'] = True
+        request.session['pedido_id'] = last_id
+        lista_ingredientes = (request.POST.getlist('ing.id'))
+        for ing in lista_ingredientes:
+            pedido = Pedido_Pizza()
+            pedido.tamano_pizza = Tamano.objects.get(id=request.POST.get('tam_id'))
+            pedido.pedido_fk = Pedido.objects.get(id=last_id)
+            pedido.pizza_fk = Ingrediente.objects.get(id=ing)
+            pedido.save()
+            ingrediente = Ingrediente.objects.get(id=ing)
+            cont += ingrediente.costo
+
+        fact = Factura()
+        fact.tamano = request.POST.get('tam_id')
+        fact.save()
+
+        for i in lista_ingredientes:
+            factped = fact_ped()
+            factped.fk_pedido = Pedido.objects.get(id=last_id)
+            factped.fk_fac = Factura.objects.get(id=Factura.objects.last().id)
+            factped.ing = i
+            factped.save()
+
+        tam = Tamano.objects.get(id=request.POST.get('tam_id'))
+        ped = Pedido.objects.get(id=last_id)
+        totaltodo = cont + tam.costo
+        ped.total = totaltodo
+        ped.save()
+        request.session['total'] = totaltodo
+        if 'ordenar' in request.POST:
+            return HttpResponseRedirect('/factura')
+        else:
+            return HttpResponseRedirect('/new')
+
+    return HttpResponse(template.render(context, request))
 
 def factura(request):
-    return render(request, 'factura.html', {})
+    last_id = request.session.get('pedido_id')
+    total = request.session.get('total')
+    pedido = Pedido.objects.get(id=last_id)
+    latest_ingrediente = Ingrediente.objects.order_by('id')
+    latest_tam = Tamano.objects.order_by('id')
+    ped_fact = fact_ped.objects.filter(fk_pedido_id=last_id).order_by('fk_fac').distinct()
+    pedidos_factura = fact_ped.objects.all()
+    facturas = Factura.objects.all()
+    facts = []
+    for i in ped_fact.values('fk_fac'):
+        facts.append(i.get('fk_fac'))
+
+    template = loader.get_template('factura.html')
+    context = {
+        'lastest_ingrediente': latest_ingrediente,
+        'lastest_tam': latest_tam,
+        'total': total,
+        'nombre': pedido.nombre,
+        'cantidad': pedido.cantidad,
+        'facturas': facts,
+        'pedidos_factura': pedidos_factura,
+        'factura_original': facturas,
+    }
+
+    if request.method == 'POST':
+        request.session.flush()
+        print('post')
+        return HttpResponseRedirect('/cliente')
 
 
-def tamanos(request):
- latest_tam = Tamano.objects.order_by('id')[:4]
- template = loader.get_template('cliente.html')
- context = {
-  'lastest_tam': latest_tam
- }
- return HttpResponse(template.render(context, request))
+    return HttpResponse(template.render(context, request))
 
+
+def crearPedido(request):
+    pedido = Pedido()
+    pedido.nombre = request.POST.get('nombre')
+    pedido.cantidad = 1
+    pedido.total = 0.00
+    pedido.fecha = datetime.now()
+    pedido.save()
+    last_id = Pedido.objects.last()
+    return last_id.id
+
+def newPizza(request):
+    last_id = request.session.get('pedido_id')
+    total = request.session.get('total')
+    pedido = Pedido.objects.get(id=last_id)
+    latest_ingrediente = Ingrediente.objects.order_by('id')
+    latest_tam = Tamano.objects.order_by('id')
+    template = loader.get_template('more.html')
+    context = {
+        'lastest_ingrediente': latest_ingrediente,
+        'lastest_tam': latest_tam,
+        'nombre': pedido.nombre,
+    }
+    if request.method == 'POST':
+        lista_ingredientes = (request.POST.getlist('ing.id'))
+        cont = 0
+        for ing in lista_ingredientes:
+            pedido = Pedido_Pizza()
+            pedido.tamano_pizza = Tamano.objects.get(id=request.POST.get('tam_id'))
+            pedido.pedido_fk = Pedido.objects.get(id=last_id)
+            pedido.pizza_fk = Ingrediente.objects.get(id=ing)
+            pedido.save()
+            ingrediente = Ingrediente.objects.get(id=ing)
+            cont += ingrediente.costo
+
+        fact = Factura()
+        fact.tamano = request.POST.get('tam_id')
+        fact.save()
+
+        for i in lista_ingredientes:
+            factped = fact_ped()
+            factped.fk_pedido = Pedido.objects.get(id=last_id)
+            factped.fk_fac = Factura.objects.get(id=Factura.objects.last().id)
+            factped.ing = i
+            factped.save()
+
+        tam = Tamano.objects.get(id=request.POST.get('tam_id'))
+        ped = Pedido.objects.get(id=last_id)
+        subtotal = cont + tam.costo + total
+        ped.total = subtotal
+        ped.cantidad += 1
+        ped.save()
+        request.session['total'] = subtotal
+        if 'ordenar' in request.POST:
+            return HttpResponseRedirect('/factura')
+        else:
+            return HttpResponseRedirect('/new')
+
+    return HttpResponse(template.render(context, request))
+
+def mostrarIngredientes(request):
+    lastest_ingrediente = Ingrediente.objects.order_by('id')
+    template = loader.get_template('polls/ingredientes.html')
+    context = {
+        'lastest_ingrediente': lastest_ingrediente
+    }
+    print(request.POST)
+    lista_ingredientes = (request.POST.getlist('ing.id'))
+    print(lista_ingredientes)
 def createPedido(request):
     latest_tam = Tamano.objects.order_by('id')
     template = loader.get_template('cliente.html')
